@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
-    entry: './src/script/index.jsx',
+    entry: './src/script/index.js',
 
     output: {
         path: path.resolve(__dirname, "public"),
@@ -21,7 +21,7 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.js$/,
+                test: /\.jsx?$/,
                 exclude: /node_modules/,
                 use: {
                     loader: "babel-loader"
@@ -46,9 +46,19 @@ module.exports = {
         new CopyWebpackPlugin([
             {
                 from: './src/script/workers',
-                to: './workers',
+                to: './',
                 toType: 'dir'
             }
         ]),
     ],
+
+    devtool: "source-map",
+
+    devServer: {
+        port: 9000,
+        contentBase: path.join(__dirname, 'public'), // boolean | string | array, static file location
+        compress: true, // enable gzip compression
+        //hot: true, // hot module replacement. Depends on HotModuleReplacementPlugin
+        https: false, // true for self-signed, object for cert authority
+    },
 }
