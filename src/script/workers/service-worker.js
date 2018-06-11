@@ -6,70 +6,91 @@ const urlsToCache = [
     '/script/main.js'
 ];
 
-self.addEventListener('activate', function (event) {
+self.addEventListener('activate', (event) => {
     event.waitUntil(
-        caches.keys().then(function (cacheNames) {
-            return Promise.all(
-                cacheNames.map(function (cacheName) {
-                    if (cacheWhitelist.indexOf(cacheName) === -1) {
-                        console.log(`Service Worker deleting cache ${cacheName}`);
-                        return caches.delete(cacheName);
-                    }
-                })
-            );
-        })
+        caches
+            .keys()
+            .then((cacheNames) => {
+                return Promise.all(
+                    cacheNames.map((cacheName) => {
+                        if (cacheWhitelist.indexOf(cacheName) === -1) {
+                            console.log(`Service Worker deleting cache ${cacheName}`);
+                            return caches.delete(cacheName);
+                        }
+                    })
+                );
+            })
     );
     console.log('Service Worker activated.');
 });
 
-self.addEventListener('install', function (event) {
+self.addEventListener('install', (event) => {
     // Perform install steps
-    console.log('Service Worker installing.');
+    // place for caching static resources
+    // html, img, style, script, stc
+    console.log('Service Worker installed.');
 });
 
-self.addEventListener('fetch', function (event) {
+self.addEventListener('fetch', (event) => {
     const url = new URL(event.request.url);
 
-    // for dev-server purpose only
-    if (url.origin == location.origin) {
+    if (url.origin === location.origin) {
         return;
     }
-
     console.log('fetch detected');
+    //cacheOnlyApproach(event);
+    cacheFirstApproach(event);
+});
+
+const cacheOnlyApproach = (event) => {
+    console.log('cache only approach');
     event.respondWith(
-        caches.match(event.request)
+        caches
+            .match(event.request)
             .then(response => {
-                // Cache hit - return response
+                // response would be undefined in case if request not found in storage
+
+                // if we found it in cache
+                // always return it
+                // in that case we are able to update only with SW re-activation
                 if (response) {
                     return response;
                 }
 
-                // IMPORTANT: Clone the request. A request is a stream and
-                // can only be consumed once. Since we are consuming this
-                // once by cache and once by the browser for fetch, we need
-                // to clone the response.
-                var fetchRequest = event.request.clone();
-
-                return fetch(fetchRequest).then(
-                    function (response) {
-                        // Check if we received a valid response
-                        //if (!response || response.status !== 200 || response.type !== 'basic') {
-                        if (!response || response.status !== 200) {
-                            return response;
-                        }
-                        let responseToCache = response.clone();
-
-                        console.log('get response in worker');
-                        console.log(responseToCache);
-
-                        caches.open(CACHE_NAME)
-                            .then((cache) => {
-                                cache.put(event.request, responseToCache);
-                            });
-
-                        return response;
-                    }
-                );
+                return fetchAndCache(event.request);
             })
     );
-});
+}
+
+const cacheFirstApproach = (event) => {
+    // in that case we may prefer to show any billboards with fresh update, or simple wait for N+1 to show fresh fetch.
+    console.log('cache first approach');
+    event.respondWith(
+        caches
+            .match(event.request)
+            .then(response => {
+                if (response) {
+                    fetchAndCache(event.request);
+
+                    // need to push update message
+                    // or not to push it at all
+
+                    return response;
+                }
+                return fetchAndCache(event.request);
+            }))
+};
+
+const fetchAndCache = request => {
+
+    return fetch(request)
+        .then(response => {
+            const responseClone = response.clone();
+
+            caches
+                .open(CACHE_NAME)
+                .then(cache => cache.put(request, responseClone));
+
+            return response;
+        });
+}
