@@ -1,3 +1,5 @@
+importScripts('fetch-handle.js', 'push-handle.js');
+
 const CACHE_NAME = 'my-site-cache-v1';
 const cacheWhitelist = [CACHE_NAME];
 const urlsToCache = [
@@ -37,60 +39,18 @@ self.addEventListener('fetch', (event) => {
     if (url.origin === location.origin) {
         return;
     }
-    console.log('fetch detected');
-    //cacheOnlyApproach(event);
+
     cacheFirstApproach(event);
+    //cacheOnlyApproach(event);
+    //networkFirstApproach(event);
 });
 
-const cacheOnlyApproach = (event) => {
-    console.log('cache only approach');
-    event.respondWith(
-        caches
-            .match(event.request)
-            .then(response => {
-                // response would be undefined in case if request not found in storage
+self.addEventListener('push', event => {
+    console.log(event);
 
-                // if we found it in cache
-                // always return it
-                // in that case we are able to update only with SW re-activation
-                if (response) {
-                    return response;
-                }
-
-                return fetchAndCache(event.request);
-            })
-    );
-}
-
-const cacheFirstApproach = (event) => {
-    // in that case we may prefer to show any billboards with fresh update, or simple wait for N+1 to show fresh fetch.
-    console.log('cache first approach');
-    event.respondWith(
-        caches
-            .match(event.request)
-            .then(response => {
-                if (response) {
-                    fetchAndCache(event.request);
-
-                    // need to push update message
-                    // or not to push it at all
-
-                    return response;
-                }
-                return fetchAndCache(event.request);
-            }))
-};
-
-const fetchAndCache = request => {
-
-    return fetch(request)
-        .then(response => {
-            const responseClone = response.clone();
-
-            caches
-                .open(CACHE_NAME)
-                .then(cache => cache.put(request, responseClone));
-
-            return response;
-        });
-}
+    var notification = new Notification('ALARMA!', {
+        body: 'Notifications are nice',
+        tag: 'simple-push-demo-notification',
+        //icon: icon
+    });
+});
