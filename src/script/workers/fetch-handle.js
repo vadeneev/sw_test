@@ -33,8 +33,11 @@ const cacheFirstApproach = (event) => {
 
                     return response;
                 }
+
                 return fetchAndCache(event.request);
             }))
+            
+        console.log('here we are');
 }
 
 const networkFirstApproach = (event) => {

@@ -4,7 +4,7 @@ import {ImageGrid} from "./catGrid/ImageGrid.jsx";
 export class Hello extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
+        this.state = {            
             imagesArr: [],
         };
 
