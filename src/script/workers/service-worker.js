@@ -2,6 +2,8 @@ importScripts('fetch-handle.js', 'push-handle.js');
 
 const CACHE_NAME = 'my-site-cache-v1';
 const cacheWhitelist = [CACHE_NAME];
+const  API_URL = 'http://thecatapi.com';
+
 const urlsToCache = [
     '/',
     '/styles/main.css',
@@ -36,21 +38,11 @@ self.addEventListener('install', (event) => {
 self.addEventListener('fetch', (event) => {
     const url = new URL(event.request.url);
 
-    if (url.origin === location.origin) {
+    if (url.origin !== API_URL) {
         return;
     }
 
     cacheFirstApproach(event);
     //cacheOnlyApproach(event);
     //networkFirstApproach(event);
-});
-
-self.addEventListener('push', event => {
-    console.log(event);
-
-    var notification = new Notification('ALARMA!', {
-        body: 'Notifications are nice',
-        tag: 'simple-push-demo-notification',
-        //icon: icon
-    });
 });
