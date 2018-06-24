@@ -1,5 +1,3 @@
-importScripts('fetch-handle.js', 'push-handle.js');
-
 const CACHE_NAME = 'my-site-cache-v1';
 const cacheWhitelist = [CACHE_NAME];
 const  API_URL = 'http://thecatapi.com';
@@ -41,8 +39,21 @@ self.addEventListener('fetch', (event) => {
     if (url.origin !== API_URL) {
         return;
     }
-
-    cacheFirstApproach(event);
-    //cacheOnlyApproach(event);
-    //networkFirstApproach(event);
+    //
+    handleFetch(event);
+    //
 });
+
+const fetchAndCache = request => {
+
+    return fetch(request)
+        .then(response => {
+            const responseClone = response.clone();
+
+            caches
+                .open(CACHE_NAME)
+                .then(cache => cache.put(request, responseClone));
+
+            return response;
+        });
+}
