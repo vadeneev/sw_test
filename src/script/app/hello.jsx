@@ -16,9 +16,8 @@ export class Hello extends React.Component {
         if ('worker' in this.props) {
             registerWorker(this.props.worker);
         }
-
-        this.fetchData();
-    }
+        this.fetchData();  
+    }    
 
     fetchData() {
         fetch('http://thecatapi.com/api/images/get?format=xml&results_per_page=10')
