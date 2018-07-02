@@ -1,6 +1,6 @@
 import './grid.scss';
-import {ImageItem} from "./ImageItem.jsx";
-import React, {Fragment} from 'react';
+import { ImageItem } from "./ImageItem.jsx";
+import React, { Fragment } from 'react';
 
 export const ImageGrid = (props) => {
     const responseList = props.images.map(image =>
@@ -11,7 +11,7 @@ export const ImageGrid = (props) => {
         <ImageItem key={image.id.toString()} url={image.url} />
     );
 
-    return(
+    return (
         <Fragment>
             <ul className='grid grid-list'>
                 {responseList}

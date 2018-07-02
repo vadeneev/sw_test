@@ -2,12 +2,6 @@ const CACHE_NAME = 'my-site-cache-v1';
 const cacheWhitelist = [CACHE_NAME];
 const  API_URL = 'http://thecatapi.com';
 
-const urlsToCache = [
-    '/',
-    '/styles/main.css',
-    '/script/main.js'
-];
-
 self.addEventListener('activate', (event) => {
     event.waitUntil(
         caches
