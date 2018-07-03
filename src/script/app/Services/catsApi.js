@@ -5,10 +5,13 @@ export  class CatsApi {
         return fetch(constants.API_URL)
             .then(data => data.text())
             .then(data => CatsApi.handleXMLresponse(data))
-            .catch(error => { console.log('error with fetch'); })
+            .catch(error => {
+                 console.log('error with fetch'); 
+                 return Promise.reject();
+                })
     }
 
-    static handleXMLresponse(data) {
+    static handleXMLresponse(data) {        
         const parser = new DOMParser();
         const xmlDoc = parser.parseFromString(data,"text/xml");
         const collection = xmlDoc.getElementsByTagName(constants.XML_SEARCH);

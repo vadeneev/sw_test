@@ -1,5 +1,5 @@
 export const registerWorker = (type = 'cacheFirst') => {
-    const workerPath  = '/' + type;
+    const workerPath = '/' + type;
     let workerUrl;
 
     switch (type) {
@@ -15,14 +15,16 @@ export const registerWorker = (type = 'cacheFirst') => {
     }
 
     if ('serviceWorker' in navigator) {
-        document.addEventListener('DOMContentLoaded', function () {            
-            navigator.serviceWorker.register(workerUrl, { scope: workerPath }).then(function (registration) {
-                // Registration was successful
-                console.log('ServiceWorker registration successful with scope: ', registration.scope);
-            }, function (err) {
-                // registration failed :(
-                console.log('ServiceWorker registration failed: ', err);
-            });
-        });
+        if (document.readyState === 'complete') {
+            proceedRegister(workerUrl, workerPath);
+        } else {
+            document.addEventListener('DOMContentLoaded', () => proceedRegister(workerUrl, workerPath));
+        }
     }
+}
+
+const proceedRegister = (workerUrl, workerPath) => {
+    navigator.serviceWorker.register(workerUrl, { scope: workerPath })
+        .then((registration) => { console.log('ServiceWorker registration successful with scope: ', registration.scope); })
+        .catch((err) => { console.log('ServiceWorker registration failed: ', err); });
 }

@@ -1,31 +1,29 @@
-import React, {Fragment} from 'react';
-import {ImageGrid} from "../Components/ImageGrid.jsx";
-import {registerWorker} from '../../register-worker.js';
-import {CatsApi} from '../Services/catsApi.js';
+import React, { Fragment } from 'react';
+import { ImageGrid } from "../Components/ImageGrid.jsx";
+import { registerWorker } from '../../register-worker.js';
+import { CatsApi } from '../Services/catsApi.js';
+import { withRouter } from 'react-router-dom';
 
-export class Hello extends React.Component {
+class _Hello extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {            
+        this.state = {
             imagesArr: [],
             workers: []
         };
         this.fetchData = this.fetchData.bind(this);
     }
 
-    componentDidMount() {        
-        if ('match' in this.props) {                        
-            this.fetchData();            
-        }          
+    componentDidMount() {
+        this.fetchData();
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
-        if ('match' in nextProps) {                        
-            return null;
-        }
-        if ('worker' in nextProps && !prevState.workers.includes(nextProps.worker)) {
-            prevState.workers.push(nextProps.worker);
-            registerWorker(nextProps.worker);
+        const workerName = nextProps.location.pathname.replace(/^\//i, '');
+
+        if (workerName && !prevState.workers.includes(workerName)) {
+            prevState.workers.push(workerName);
+            registerWorker(workerName);
             return prevState;
         }
         return null;
@@ -33,7 +31,10 @@ export class Hello extends React.Component {
 
     fetchData() {
         CatsApi.fetchData()
-            .then(imagesArr => this.setState({imagesArr}));
+            .then(imagesArr => {                
+                this.setState({ imagesArr }
+            )})
+            .catch(()=>{});
     }
 
 
@@ -41,8 +42,10 @@ export class Hello extends React.Component {
         return (
             <Fragment>
                 <button className="btn-more" onClick={this.fetchData}>Show more</button>
-                <ImageGrid images={this.state.imagesArr}/>
+                <ImageGrid images={this.state.imagesArr} />
             </Fragment>
         );
     }
 }
+
+export default withRouter(_Hello);
