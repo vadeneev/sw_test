@@ -11,6 +11,10 @@ app.get('*', function (request, response) {
   response.sendFile(path.resolve(PUBLIC_PATH, 'index.html'));
 });
 
+app.get('/api/cats', function (request, response) {
+  response.send();
+});
+
 app.listen(3000, function () {
   console.log('SW example server on port 3000!');
 });
