@@ -3,12 +3,26 @@ import * as constants from '../Constants/constants.js';
 export  class CatsApi {
     static fetchData() {
         return fetch(constants.API_URL)
-            .then(data => data.text())
-            .then(data => CatsApi.handleXMLresponse(data))
+            .then(data => data.json())
+            .then(data => CatsApi.handleJSONresponse(data))
+            //.then(data => data.text())            
+            //.then(data => CatsApi.handleXMLresponse(data))
             .catch(error => {
                  console.log('error with fetch'); 
                  return Promise.reject();
                 })
+    }
+
+    static handleJSONresponse(data) {        
+        let imagesArr = [];
+
+        for (const item of data.values ) {
+            imagesArr.push({
+                id: item.id,
+                url: item.href,
+            });
+        }        
+        return imagesArr;
     }
 
     static handleXMLresponse(data) {        

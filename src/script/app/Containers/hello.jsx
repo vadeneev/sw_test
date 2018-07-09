@@ -9,6 +9,7 @@ class _Hello extends React.Component {
         super(props);
         this.state = {
             imagesArr: [],
+            imagesArrNoCache: [],
             workers: []
         };
         this.fetchData = this.fetchData.bind(this);
@@ -33,8 +34,12 @@ class _Hello extends React.Component {
         CatsApi.fetchData()
             .then(imagesArr => {                
                 this.setState({ imagesArr }
-            )})
-            .catch(()=>{});
+            )});
+
+        CatsApi.fetchData('nocache')
+            .then(imagesArrNoCache => {                
+                this.setState({ imagesArrNoCache }
+            )});
     }
 
 
@@ -42,7 +47,10 @@ class _Hello extends React.Component {
         return (
             <Fragment>
                 <button className="btn-more" onClick={this.fetchData}>Show more</button>
-                <ImageGrid images={this.state.imagesArr} />
+                <div className="container">
+                    <ImageGrid images={this.state.imagesArrNoCache} title='No cache'/>
+                    <ImageGrid images={this.state.imagesArr} title='Cached'/>
+                </div>
             </Fragment>
         );
     }

@@ -4,6 +4,10 @@
   max-width: 100vw;
 }
 
+.container {
+  display: flex;
+}
+
 .grid {
   margin: 0;
   padding: 0;
@@ -21,6 +25,15 @@
 
   &__img {
     max-width: 100%;
+  }
+
+  &-list {
+    list-style-type: none;
+    padding: 20px;
+  }
+
+  &__title {
+    text-align: center;
   }
 }
 
