@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Hello from './app/Containers/hello.jsx';
-import { BrowserRouter as Router, Route, NavLink, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, NavLink, Switch, Redirect } from "react-router-dom";
 
 
 const BasicExample = () => (    
@@ -14,15 +14,16 @@ const BasicExample = () => (
           <li className = "link-container__item">
             <NavLink  activeClassName="link--active" to="networkFirst">networkFirst</NavLink>
           </li>
+          {/*}
           <li className = "link-container__item">
             <NavLink  activeClassName="link--active" to="cacheOnly">cacheOnly</NavLink>
-          </li>
+          </li>*/}
         </ul>
             <Switch>
                 <Route path="/cacheFirst" component={() => <Hello worker="cacheFirst"/>}/>
                 <Route path="/networkFirst" component={() => <Hello worker="networkFirst"/>}/>
-                <Route path="/cacheOnly" component={() => <Hello worker="cacheOnly"/>}/>
-                <Route path="*" component={Hello}/>
+                {/*<Route path="/cacheOnly" component={() => <Hello worker="cacheOnly"/>}/>*/}
+                <Redirect from='*' to='/cacheFirst'/>
             </Switch>        
       </nav>
       </Router>

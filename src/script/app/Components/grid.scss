@@ -42,6 +42,15 @@
   width: 100%;
   background-color: #dedede;
   border: #666;
+  transition: all 0.5s ease-in-out;
+
+  &.on {
+    background-color: #91ddae;
+  }
+
+  &.off {
+    background-color: #f2c3c3;
+  }
 }
 
 .link-container {

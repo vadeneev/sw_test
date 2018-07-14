@@ -10,12 +10,19 @@ let isBusy = false;
 
 app.use(express.static(PUBLIC_PATH));
 
-app.put('/api/busy', function (request, response) {
+app.get('/api/health', function (request, response) {  
+  isBusy 
+    ? response.sendStatus(503)
+    : response.sendStatus(200);
+});
+
+app.get('/api/busy', function (request, response) {
   isBusy = !isBusy;
+  console.log('server is Busy :' + isBusy);
   response.sendStatus(200);
 });
 
-app.get('/api/cats', function (request, response) {
+app.get('/api/cats*', function (request, response) {
   if (isBusy) {
     response.sendStatus(500);
     return;

@@ -1,14 +1,33 @@
 import * as constants from '../Constants/constants.js';
 
 export  class CatsApi {
-    static fetchData() {
-        return fetch(constants.API_URL)
-            .then(data => data.json())
+
+    static toggleServer() {
+        fetch(constants.API_TOGGLE);
+    }
+
+    static checkServer() {
+        return fetch(constants.API_HEALTH);
+    }
+
+    static fetchData(value = '') {
+        let apiURL = constants.API_URL;
+        if (value === 'cache') {
+            apiURL = constants.API_URL_CACHED;
+        }
+
+        return fetch(apiURL)
+            .then(response => {
+                if(response.ok) {                    
+                    return response.json();
+                }
+                return new Promise.reject();
+            })
             .then(data => CatsApi.handleJSONresponse(data))
-            //.then(data => data.text())            
+            //.then(data => data.text())
             //.then(data => CatsApi.handleXMLresponse(data))
             .catch(error => {
-                 console.log('error with fetch'); 
+                 console.log('error with fetch');
                  return Promise.reject();
                 })
     }
@@ -25,7 +44,7 @@ export  class CatsApi {
         return imagesArr;
     }
 
-    static handleXMLresponse(data) {        
+    static handleXMLresponse(data) {
         const parser = new DOMParser();
         const xmlDoc = parser.parseFromString(data,"text/xml");
         const collection = xmlDoc.getElementsByTagName(constants.XML_SEARCH);

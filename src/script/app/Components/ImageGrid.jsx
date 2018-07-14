@@ -3,7 +3,7 @@ import { ImageItem } from "./ImageItem.jsx";
 import React, { Fragment } from 'react';
 
 export const ImageGrid = (props) => {
-    const responseList = props.images.map(image =>
+    const responseList = props.images.slice(0, 10).map(image =>
         <li key={image.id.toString()}>{image.url}</li>
     );
 
