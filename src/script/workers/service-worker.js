@@ -2,8 +2,12 @@ const CACHE_NAME = 'my-site-cache-v1';
 const cacheWhitelist = [CACHE_NAME];
 const  API_URL = '/api/cats/cached';
 
-self.addEventListener('activate', (event) => {
-    event.waitUntil(self.clients.claim()); // Become available to all pages
+ 
+self.addEventListener('activate', function (evt) {
+    // `self.clients.claim()` allows the service worker to start intercepting
+    // requests immediately. In addition to `self.skipWaiting()` it's needed to
+    // allow serving fallbacks from the beginning.
+    evt.waitUntil(self.clients.claim());
     console.log('Service Worker activated.');
 });
 
@@ -12,7 +16,7 @@ self.addEventListener('install', (event) => {
     // Perform install steps
     // place for caching static resources
     // html, img, style, script, stc
-    console.log('Service Worker installed.');    
+    console.log('Service Worker installed.');
 });
 
 self.addEventListener('fetch', (event) => {

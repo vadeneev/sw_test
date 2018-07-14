@@ -19,12 +19,18 @@ const handleFetch = (event) => {
                 console.log('NOT cached request');
 
                 return fetchAndCache(event.request)
-                    .then((response) => { 
+                    .then((response) => {
+                        if (!response.ok) {
+                            return fromCache(event.request);
+                        }
                         console.log('Extra request for first visit');
                         fetchAndCache(event.request); 
 
-                        return response;
-                    });
+                        return response;                        
+                    })
+                    .catch(() => {
+                        return fallBack();
+                    })
             }))
                     
 }
