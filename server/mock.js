@@ -1,6 +1,17 @@
+const path = require('path');
+const PUBLIC_PATH_CATS = path.resolve(__dirname, '../cats');
+
 let lastItem = 0;
 
 let cashedJSON = '';
+
+const fs = require('fs');
+
+fs.readdir(PUBLIC_PATH_CATS, (err, files) => {
+  files.forEach(file => {
+    console.log(file);
+  });
+})
 
 const getRandomData = (count) => {    
     if (!cashedJSON) {
@@ -12,7 +23,7 @@ const getRandomData = (count) => {
 const getNewData = () => {
     let resultArr = [];    
 
-    for(let i = 0; i < 10; i++) {        
+    for(let i = 0; i < 100; i++) {        
         resultArr.push(data[lastItem]);
         lastItem++;
         if(lastItem >= data.length) {

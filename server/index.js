@@ -1,14 +1,25 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const dataMock = require('./mock.js');
+//const dataMock = require('./mock.js');
+const dataMock = require('./localData.js');
 
 const PUBLIC_LOOKUP = '../public';
+const PUBLIC_CATS = '../cats';
+const PUBLIC_PATH_CATS = path.resolve(__dirname, PUBLIC_CATS);
 const PUBLIC_PATH = path.resolve(__dirname, PUBLIC_LOOKUP);
 
 let isBusy = false;
 
 app.use(express.static(PUBLIC_PATH));
+app.use('/cats', express.static(PUBLIC_PATH_CATS, {
+
+  setHeaders: (res) => {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    }
+  }
+  
+));
 
 app.get('/api/health', function (request, response) {  
   isBusy 

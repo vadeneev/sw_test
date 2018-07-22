@@ -1,3 +1,15 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 #app {
   display: flex;
   flex-flow: nowrap;  
@@ -15,6 +27,7 @@
   flex-flow: wrap column;
   background-color: #fafafa;
   width: 50vw;
+  text-align: center; // for cascade
 
   &__item {
     list-style-type: none;
@@ -25,11 +38,19 @@
 
   &__img {
     max-width: 100%;
+    /* max-height: calc(50vh - 15px); */
   }
 
   &-list {
     list-style-type: none;
     padding: 20px;
+
+    > li {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      direction: rtl;
+    }
   }
 
   &__title {

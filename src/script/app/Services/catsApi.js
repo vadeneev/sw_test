@@ -23,7 +23,7 @@ export  class CatsApi {
                 }
                 return new Promise.reject();
             })
-            .then(data => CatsApi.handleJSONresponse(data))
+            .then(data => CatsApi.handleJSONresponse(data, value))
             //.then(data => data.text())
             //.then(data => CatsApi.handleXMLresponse(data))
             .catch(error => {
@@ -32,12 +32,13 @@ export  class CatsApi {
                 })
     }
 
-    static handleJSONresponse(data) {        
+    static handleJSONresponse(data, cache) {        
         let imagesArr = [];
 
         for (const item of data.values ) {
             imagesArr.push({
                 id: item.id,
+                //url: `${item.href}?${cache}`,
                 url: item.href,
             });
         }        
