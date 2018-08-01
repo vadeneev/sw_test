@@ -13,19 +13,26 @@ self.addEventListener('activate', function (evt) {
 });
 
 self.addEventListener('install', (event) => {
-    event.waitUntil(self.skipWaiting());
+    event.waitUntil(caches.open(CACHE_NAME)
+    .then((cache) => {
+        return cache.addAll(['cats/fallback.svg?cache']);
+    })
+    .then(()=> {
+        return self.skipWaiting()
+    }));
     // Perform install steps
     // place for caching static resources
-    // html, img, style, script, stc
+    // html, img, style, script, stc    
     console.log('Service Worker installed.');
 });
 
 self.addEventListener('fetch', (event) => {
     const url = new URL(event.request.url);
-    if (!url.pathname.includes('cache') && !url.search.includes('cache')) {
+    
+    if (!url.href.includes('cache')) {
         return;
     }
-    console.log(`Execute fetch in worker for ${url.pathname}`);    
+    console.log(`Handle fetch in worker for ${url.pathname}`);   
     //
     handleFetch(event);
     //
@@ -39,6 +46,10 @@ const handleFetch = (event) => {
             .match(event.request)
             .then(response => {
                 if (response) {
+                    if (event.request['destination'] && event.request.destination === 'image') {
+                        console.log('Serve IMAGE from CACHE');
+                        return response;
+                    }
                     fetchAndCache(event.request)
                         
                         // fetch first img
@@ -89,9 +100,14 @@ const extraCachingForImg = response => {
 
 const handleJSONresponse = (data) => {
     if ('values' in data && data.values.length) {
-        const imgURL = `${data.values[0].href}?cache`;
+        const imgURL = data.values[0].href;
         //return
-        fetch(imgURL);        
+        console.log(imgURL);
+        //fetch(imgURL);
+
+        caches.open(CACHE_NAME).then((cache) => {
+            return cache.addAll([`${imgURL}?cache`]);
+        });
         console.log(`Serve to cache ${imgURL}`);
     }    
 }

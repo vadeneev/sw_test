@@ -83,7 +83,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "* {\n  box-sizing: border-box; }\n\nbody {\n  margin: 0; }\n  body::-webkit-scrollbar {\n    display: none; }\n\n#app {\n  display: flex;\n  flex-flow: nowrap;\n  max-width: 100vw; }\n\n.container {\n  display: flex; }\n\n.grid {\n  margin: 0;\n  padding: 0;\n  display: flex;\n  flex-flow: wrap column;\n  background-color: #fafafa;\n  width: 50vw;\n  text-align: center; }\n  .grid__item {\n    list-style-type: none;\n    flex: 1;\n    padding: 10px;\n    box-sizing: border-box; }\n  .grid__img {\n    max-width: 100%;\n    /* max-height: calc(50vh - 15px); */ }\n  .grid-list {\n    list-style-type: none;\n    padding: 20px; }\n    .grid-list > li {\n      white-space: nowrap;\n      overflow: hidden;\n      text-overflow: ellipsis;\n      direction: rtl; }\n  .grid__title {\n    text-align: center; }\n\n.btn-more {\n  height: 50px;\n  width: 100%;\n  background-color: #dedede;\n  border: #666;\n  transition: all 0.5s ease-in-out; }\n  .btn-more.on {\n    background-color: #91ddae; }\n  .btn-more.off {\n    background-color: #f2c3c3; }\n\n.link-container {\n  display: flex;\n  margin: 0;\n  padding: 0;\n  width: 100%;\n  justify-content: space-between; }\n  .link-container__item {\n    display: flex;\n    margin: 0; }\n    .link-container__item a {\n      padding: 20px; }\n", ""]);
+exports.push([module.i, "* {\n  box-sizing: border-box; }\n\nbody {\n  margin: 0;\n  background-color: #fafafa; }\n  body::-webkit-scrollbar {\n    display: none; }\n\n#app {\n  display: flex;\n  flex-flow: nowrap;\n  max-width: 100vw; }\n\n.container {\n  display: flex; }\n\n.grid {\n  margin: 0;\n  padding: 0;\n  display: flex;\n  flex-flow: wrap column;\n  background-color: #fafafa;\n  width: 50vw;\n  text-align: center; }\n  .grid__item {\n    list-style-type: none;\n    flex: 1;\n    padding: 10px;\n    box-sizing: border-box; }\n  .grid__img {\n    max-width: 100%;\n    max-height: 50vh;\n    /* max-height: calc(50vh - 15px); */ }\n  .grid-list {\n    list-style-type: none;\n    padding: 20px; }\n    .grid-list > li {\n      white-space: nowrap;\n      overflow: hidden;\n      text-overflow: ellipsis;\n      direction: rtl; }\n  .grid__title {\n    text-align: center; }\n\n.btn-more {\n  height: 50px;\n  width: 100%;\n  background-color: #dedede;\n  border: #666;\n  transition: all 0.5s ease-in-out; }\n  .btn-more.on {\n    background-color: #91ddae; }\n  .btn-more.off {\n    background-color: #f2c3c3; }\n\n.link-container {\n  display: flex;\n  margin: 0;\n  padding: 0;\n  width: 100%;\n  justify-content: space-between; }\n  .link-container__item {\n    display: flex;\n    margin: 0; }\n    .link-container__item a {\n      padding: 20px; }\n", ""]);
 
 // exports
 
@@ -24985,8 +24985,8 @@ class CatsApi {
         for (const item of data.values) {
             imagesArr.push({
                 id: item.id,
-                //url: `${item.href}?${cache}`,
-                url: item.href
+                url: `${item.href}?${cache}`
+                //url: item.href,
             });
         }
         return imagesArr;

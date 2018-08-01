@@ -23,7 +23,7 @@ const fromCache = (request) => {
 }
 
 const fallBack = () => {
-    let data = {values: [ { "id": "7f7-fallback", "href": "https://i.pinimg.com/736x/5c/2a/e5/5c2ae5d62af086443da2720a40ab327f--e-cards-holidays.jpg" }  ]};
+    let data = {values: [ { "id": "FALLBACK", "href": "cats/fallback.svg" }  ]};
     let newResponse = new Response(JSON.stringify(data), { headers: {
         'Content-Type': 'application/json'
       }});

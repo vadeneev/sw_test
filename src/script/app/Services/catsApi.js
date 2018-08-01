@@ -38,10 +38,10 @@ export  class CatsApi {
         for (const item of data.values ) {
             imagesArr.push({
                 id: item.id,
-                //url: `${item.href}?${cache}`,
-                url: item.href,
+                url: `${item.href}?${cache}`,
+                //url: item.href,
             });
-        }        
+        }                
         return imagesArr;
     }
 
