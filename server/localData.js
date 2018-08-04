@@ -10,6 +10,7 @@ const fs = require('fs');
 
 fs.readdir(PUBLIC_PATH_CATS, (err, files) => {
   files.forEach((file, index) => {
+    if (file.indexOf('svg') !== -1) { return; }
     data.push({id: index, href: `/cats/${file}`});
   });
 })

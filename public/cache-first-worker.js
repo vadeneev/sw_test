@@ -8,7 +8,7 @@ self.addEventListener('activate', function (evt) {
     // `self.clients.claim()` allows the service worker to start intercepting
     // requests immediately. In addition to `self.skipWaiting()` it's needed to
     // allow serving fallbacks from the beginning.
-    evt.waitUntil(self.clients.claim());
+    evt.waitUntil(self.clients.claim())
     console.log('Service Worker activated.');
 });
 
@@ -18,7 +18,7 @@ self.addEventListener('install', (event) => {
         return cache.addAll(['cats/fallback.svg?cache']);
     })
     .then(()=> {
-        return self.skipWaiting()
+        return self.skipWaiting();
     }));
     // Perform install steps
     // place for caching static resources
